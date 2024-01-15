@@ -107,6 +107,13 @@ impl Endpoint {
     }
 }
 
+impl Drop for Endpoint {
+    /// Removes the [Endpoint] from list of stats endpoints.
+    fn drop(&mut self) {
+        self.stats.lock().unwrap().endpoints.remove(&self.endpoint);
+    }
+}
+
 /// Stats of a single endpoint.
 /// Right now, there is only one business endpoint, all other are internals.
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
